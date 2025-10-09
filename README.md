@@ -82,9 +82,3 @@ Este proyecto está bajo la **Licencia MIT**. Consulta el archivo `LICENSE` para
 <div align="center">
   <h3>¡Únete a la Aventura!</h3>
   <p>Gracias por explorar Cyber Feline. Si te gusta el proyecto, ¡considera darle una estrella ⭐ para apoyar su desarrollo!</p>
-  
-  <p>
-    <a href="URL_DE_TU_TWITTER"><img src="https://img.shields.io/badge/Sigue_el_Desarrollo-Twitter-1DA1F2?style=for-the-badge&logo=twitter" alt="Twitter"></a>
-    <a href="URL_DE_TU_DISCORD"><img src="https://img.shields.io/badge/Únete_a_la_Comunidad-Discord-7289DA?style=for-the-badge&logo=discord" alt="Discord"></a>
-  </p>
-</div>
