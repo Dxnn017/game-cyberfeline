@@ -28,20 +28,8 @@
 
 **Cyber Feline** es una aventura narrativa en 2.5D que combina exploración, sigilo y una historia profunda. Controla a **Yumi**, una audaz reportera, y a su compañero felino **Kuro**, un gato mejorado cibernéticamente con poderes psíquicos. Juntos, deben navegar por los peligrosos distritos de una ciudad controlada por la megacorporación **Vantion Corp**.
 
-Inspirado en la estética de **Arcane** y la jugabilidad de aventuras clásicas, este juego te sumerge en un conflicto entre una distopía **cyberpunk** y una emergente utopía **solarpunk**.
+Este juego te sumerge en un conflicto entre una distopía **cyberpunk** y una emergente utopía **solarpunk**.
 
----
-
-## ⚠️ Estado Actual: Prototipo Jugable
-
-¡Lo que ves aquí es el comienzo de algo grande! La versión actual disponible en el enlace es un **prototipo temprano**.
-
--   ✅ **Mecánicas implementadas:** Movimiento de personajes, sistema de diálogo básico e interacciones con el entorno.
--   🚧 **En desarrollo:** Sistema de combate, habilidades de hackeo de Yumi, poderes psíquicos de Kuro y la expansión de los niveles.
-
-¡Tu feedback en esta etapa es increíblemente valioso! Si encuentras un bug o tienes una idea, no dudes en crear un [Issue](URL_A_TUS_ISSUES).
-
----
 
 ## ✨ Características
 
@@ -84,26 +72,6 @@ Inspirado en la estética de **Arcane** y la jugabilidad de aventuras clásicas,
     -   `Poderes Psíquicos (próximamente)`: Telequinesis para mover objetos, teletransportación a corta distancia y hackeo mental.
 </details>
 
----
-
-## 🗺️ Hoja de Ruta (Roadmap)
-
-Este es el plan general para el futuro de **Cyber Feline**.
-
--   [ ] **Fase 1: Prototipo (Actual)**
-    -   [x] Movimiento y diálogo básico.
-    -   [ ] Implementar sistema de inventario.
-    -   [ ] Añadir el primer puzzle interactivo.
--   [ ] **Fase 2: Alpha**
-    -   [ ] Implementar habilidades completas de Yumi y Kuro.
-    -   [ ] Diseñar el primer nivel completo del distrito cyberpunk.
-    -   [ ] Introducir los primeros enemigos y el sistema de combate/sigilo.
--   [ ] **Fase 3: Beta**
-    -   [ ] Añadir las zonas solarpunk.
-    -   [ ] Completar el arco narrativo principal.
-    -   [ ] Pulido de sonido, música y efectos visuales.
-
----
 
 ## 📄 Licencia
 
