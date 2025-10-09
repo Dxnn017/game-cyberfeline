@@ -1,8 +1,11 @@
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 import heroBg from "@/assets/hero-bg.jpg";
 import yumiHero from "@/assets/yumi-hero.png";
 
 export const Hero = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image with Overlay */}
@@ -37,15 +40,20 @@ export const Hero = () => {
             </p>
 
             <div className="flex flex-wrap gap-4">
-              <Button size="lg" className="text-lg px-8 py-6 bg-primary hover:bg-primary/90 transition-all hover:scale-105 animate-glow-pulse">
-                Jugar Demo
+              <Button 
+                size="lg" 
+                onClick={() => navigate("/demo")}
+                className="text-lg px-8 py-6 bg-primary hover:bg-primary/90 transition-all hover:scale-105 animate-glow-pulse"
+              >
+                Ver Demo
               </Button>
               <Button 
                 size="lg" 
-                variant="outline" 
+                variant="outline"
+                onClick={() => navigate("/auth")}
                 className="text-lg px-8 py-6 border-2 border-secondary hover:bg-secondary/20 glow-border-purple transition-all hover:scale-105"
               >
-                Ver Trailer
+                Comenzar Aventura
               </Button>
             </div>
 

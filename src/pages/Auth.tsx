@@ -1,0 +1,209 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { toast } from "sonner";
+
+export default function Auth() {
+  const navigate = useNavigate();
+  const [isLogin, setIsLogin] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const validatePassword = (pass: string) => {
+    if (pass.length < 8 || pass.length > 12) {
+      return "La contraseña debe tener entre 8 y 12 caracteres";
+    }
+    if (!/[A-Z]/.test(pass)) {
+      return "Debe incluir al menos una mayúscula";
+    }
+    if (!/[a-z]/.test(pass)) {
+      return "Debe incluir al menos una minúscula";
+    }
+    if (!/[0-9]/.test(pass)) {
+      return "Debe incluir al menos un número";
+    }
+    if (!/[^A-Za-z0-9]/.test(pass)) {
+      return "Debe incluir al menos un carácter especial";
+    }
+    return null;
+  };
+
+  const handleAuth = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    try {
+      if (!isLogin) {
+        const passwordError = validatePassword(password);
+        if (passwordError) {
+          setError(passwordError);
+          setLoading(false);
+          return;
+        }
+      }
+
+      if (isLogin) {
+        const { error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+
+        if (error) {
+          setError("Credenciales incorrectas. Verifica tu email y contraseña.");
+          toast.error("Error al iniciar sesión");
+          setLoading(false);
+          return;
+        }
+
+        toast.success("¡Bienvenido de vuelta!");
+        navigate("/game");
+      } else {
+        const { error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            emailRedirectTo: `${window.location.origin}/game`,
+          },
+        });
+
+        if (error) {
+          setError(error.message);
+          toast.error("Error al registrarse");
+          setLoading(false);
+          return;
+        }
+
+        toast.success("¡Cuenta creada! Redirigiendo al juego...");
+        navigate("/game");
+      }
+    } catch (err) {
+      setError("Error inesperado. Intenta de nuevo.");
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-background flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Animated Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-secondary/10"></div>
+      <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-20"></div>
+
+      {/* Auth Card */}
+      <div className="relative z-10 w-full max-w-md">
+        <div className="bg-card/50 backdrop-blur-xl border-2 border-border rounded-2xl p-8 shadow-2xl">
+          {/* Logo/Title */}
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-black mb-2">
+              <span className="gradient-cyber">CYBER</span>{" "}
+              <span className="neon-text-purple">FELINE</span>
+            </h1>
+            <p className="text-muted-foreground">
+              {isLogin ? "Inicia sesión para continuar" : "Crea tu cuenta"}
+            </p>
+          </div>
+
+          {/* Form */}
+          <form onSubmit={handleAuth} className="space-y-6">
+            <div className="space-y-2">
+              <Label htmlFor="email">Correo Electrónico</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="tu@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="bg-background/50 border-border"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="password">Contraseña</Label>
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder={isLogin ? "Tu contraseña" : "8-12 caracteres"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="bg-background/50 border-border pr-10"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+              {!isLogin && (
+                <p className="text-xs text-muted-foreground">
+                  8-12 caracteres, mayúsculas, minúsculas, números y especiales
+                </p>
+              )}
+            </div>
+
+            {/* Error Message */}
+            {error && (
+              <div className="p-3 rounded-lg bg-destructive/10 border border-destructive/50 animate-in fade-in slide-in-from-top-2">
+                <p className="text-sm text-destructive font-medium">{error}</p>
+              </div>
+            )}
+
+            {/* Submit Button */}
+            <Button
+              type="submit"
+              disabled={loading}
+              className="w-full text-lg py-6 animate-glow-pulse"
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                  Procesando...
+                </>
+              ) : isLogin ? (
+                "Iniciar Sesión"
+              ) : (
+                "Crear Cuenta"
+              )}
+            </Button>
+          </form>
+
+          {/* Toggle Mode */}
+          <div className="mt-6 text-center">
+            <button
+              onClick={() => {
+                setIsLogin(!isLogin);
+                setError("");
+              }}
+              className="text-sm text-muted-foreground hover:text-primary transition-colors"
+            >
+              {isLogin
+                ? "¿No tienes cuenta? Regístrate"
+                : "¿Ya tienes cuenta? Inicia sesión"}
+            </button>
+          </div>
+
+          {/* Back to Home */}
+          <div className="mt-4 text-center">
+            <button
+              onClick={() => navigate("/")}
+              className="text-sm text-muted-foreground hover:text-secondary transition-colors"
+            >
+              Volver al inicio
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
