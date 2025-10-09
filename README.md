@@ -75,7 +75,7 @@ Este juego te sumerge en un conflicto entre una distopía **cyberpunk** y una em
 
 ## 📄 Licencia
 
-Este proyecto está bajo la **Licencia MIT**. Consulta el archivo `LICENSE` para más detalles.
+Este proyecto está **bajo todos los derechos reservados**. No se permite la reproducción, distribución ni modificación de este código sin el permiso expreso del propietario.  
 
 ---
 
