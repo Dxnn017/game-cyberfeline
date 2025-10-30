@@ -23,7 +23,7 @@ export const Hero = () => {
           <div className="space-y-8">
             <div className="inline-block">
               <span className="px-4 py-2 rounded-full border border-primary/50 text-sm font-medium neon-text-pink animate-glow-pulse">
-                Próximamente 2025
+                Próximamente 2026
               </span>
             </div>
             

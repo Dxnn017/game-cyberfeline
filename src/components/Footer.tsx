@@ -60,7 +60,7 @@ export const Footer = () => {
 
         {/* Copyright */}
         <div className="pt-8 border-t border-border text-center text-sm text-muted-foreground">
-          <p>© 2025 Cyber Feline. Todos los derechos reservados.</p>
+          <p>© 2026 Cyber Feline. Todos los derechos reservados.</p>
         </div>
       </div>
     </footer>

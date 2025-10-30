@@ -1,4 +1,4 @@
-import { Zap, Users, Puzzle, Sparkles } from "lucide-react";
+import { Zap, Users, Gamepad2, Sparkles } from "lucide-react";
 
 export const Features = () => {
   const features = [
@@ -15,9 +15,9 @@ export const Features = () => {
       color: "neon-purple"
     },
     {
-      icon: Puzzle,
-      title: "Puzzles Tech",
-      description: "Resuelve acertijos complejos usando las habilidades únicas de hackeo de ambos personajes.",
+      icon: Gamepad2,
+      title: "Exploración Libre",
+      description: "Muévete libremente por el mundo cyberpunk, interactúa con el entorno y descubre secretos ocultos.",
       color: "neon-cyan"
     },
     {
