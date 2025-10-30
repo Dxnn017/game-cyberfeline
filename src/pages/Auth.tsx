@@ -16,20 +16,30 @@ export default function Auth() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+  const validateEmail = (email: string) => {
+    const trimmed = email.trim();
+    if (!trimmed) return "El email es requerido";
+    if (trimmed.length > 255) return "El email es demasiado largo";
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(trimmed)) return "Email inválido";
+    return null;
+  };
+
   const validatePassword = (pass: string) => {
-    if (pass.length < 8 || pass.length > 12) {
+    const trimmed = pass.trim();
+    if (trimmed.length < 8 || trimmed.length > 12) {
       return "La contraseña debe tener entre 8 y 12 caracteres";
     }
-    if (!/[A-Z]/.test(pass)) {
+    if (!/[A-Z]/.test(trimmed)) {
       return "Debe incluir al menos una mayúscula";
     }
-    if (!/[a-z]/.test(pass)) {
+    if (!/[a-z]/.test(trimmed)) {
       return "Debe incluir al menos una minúscula";
     }
-    if (!/[0-9]/.test(pass)) {
+    if (!/[0-9]/.test(trimmed)) {
       return "Debe incluir al menos un número";
     }
-    if (!/[^A-Za-z0-9]/.test(pass)) {
+    if (!/[^A-Za-z0-9]/.test(trimmed)) {
       return "Debe incluir al menos un carácter especial";
     }
     return null;
@@ -41,8 +51,20 @@ export default function Auth() {
     setLoading(true);
 
     try {
+      // Validar email
+      const trimmedEmail = email.trim();
+      const trimmedPassword = password.trim();
+      
+      const emailError = validateEmail(trimmedEmail);
+      if (emailError) {
+        setError(emailError);
+        setLoading(false);
+        return;
+      }
+
+      // Validar contraseña en registro
       if (!isLogin) {
-        const passwordError = validatePassword(password);
+        const passwordError = validatePassword(trimmedPassword);
         if (passwordError) {
           setError(passwordError);
           setLoading(false);
@@ -52,12 +74,19 @@ export default function Auth() {
 
       if (isLogin) {
         const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
+          email: trimmedEmail,
+          password: trimmedPassword,
         });
 
         if (error) {
-          setError("Credenciales incorrectas. Verifica tu email y contraseña.");
+          // Manejo específico de errores de Supabase
+          if (error.message.includes("Invalid login credentials")) {
+            setError("Credenciales incorrectas. Verifica tu email y contraseña.");
+          } else if (error.message.includes("Email not confirmed")) {
+            setError("Debes confirmar tu email antes de iniciar sesión.");
+          } else {
+            setError(error.message);
+          }
           toast.error("Error al iniciar sesión");
           setLoading(false);
           return;
@@ -67,15 +96,24 @@ export default function Auth() {
         navigate("/game");
       } else {
         const { error } = await supabase.auth.signUp({
-          email,
-          password,
+          email: trimmedEmail,
+          password: trimmedPassword,
           options: {
             emailRedirectTo: `${window.location.origin}/game`,
           },
         });
 
         if (error) {
-          setError(error.message);
+          // Manejo específico de errores de registro
+          if (error.message.includes("User already registered")) {
+            setError("Este email ya está registrado. Intenta iniciar sesión.");
+          } else if (error.message.includes("Password should be")) {
+            setError("La contraseña no cumple con los requisitos de seguridad.");
+          } else if (error.message.includes("leaked password")) {
+            setError("Esta contraseña ha sido comprometida. Usa una contraseña más segura.");
+          } else {
+            setError(error.message);
+          }
           toast.error("Error al registrarse");
           setLoading(false);
           return;
@@ -86,6 +124,7 @@ export default function Auth() {
       }
     } catch (err) {
       setError("Error inesperado. Intenta de nuevo.");
+      toast.error("Error del sistema");
       setLoading(false);
     }
   };
